@@ -13,9 +13,7 @@ public class Customer {
         this.name = name;
         this.id = count.incrementAndGet();
     }
-    public void remove(){
-        
-    }
+
 
     public int getId() {
         return id;
