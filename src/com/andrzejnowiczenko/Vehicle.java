@@ -4,13 +4,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Vehicle {
 
-    private static final AtomicInteger count = new AtomicInteger(0);
-    int id;
-    private String brand;
-    private String model;
-    private int mileage;
-    private String condition;
-    boolean isAvailable;
+    protected static final AtomicInteger count = new AtomicInteger(0);
+    protected int id;
+    protected String brand;
+    protected String model;
+    protected int mileage;
+    protected String condition;
+    protected boolean isAvailable;
 
     Vehicle(String brand, String model, int mileage, String condition) {
         this.brand = brand;
@@ -44,6 +44,8 @@ public abstract class Vehicle {
     public boolean isAvailable() {
         return isAvailable;
     }
+
+    //abstract public Vehicle newVehicle();
 
     @Override
     public String toString() {
