@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class Car extends Vehicle{
 
 
-
     private int seats;
 
     Car(String brand, String model, int mileage, String condition, int seats) {

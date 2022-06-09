@@ -2,16 +2,16 @@ package com.andrzejnowiczenko;
 
 import java.util.Scanner;
 
-public class Truck extends Vehicle{
+public class Motorcycle extends Vehicle{
 
-    private int capacity;
+    private int cilinderCapacity;
 
-    Truck(String brand, String model, int mileage, String condition, int capacity) {
+    Motorcycle(String brand, String model, int mileage, String condition, int cilinderCapacity) {
         super(brand, model, mileage, condition);
-        this.capacity = capacity;
+        this.cilinderCapacity = cilinderCapacity;
     }
 
-    public static Truck newTruck(){
+    public static Motorcycle newMotorcycle(){
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("podaj marke");
@@ -22,12 +22,9 @@ public class Truck extends Vehicle{
         int mileage = scanner.nextInt();
         System.out.println("podaj stan");
         String condition = scanner.next();
-        System.out.println("podaj ladownosc:");
-        int capacity = scanner.nextInt();
+        System.out.println("podaj pojemnosc silnika:");
+        int cilinderCapacity = scanner.nextInt();
 
-        return new Truck(brand, model, mileage, condition,capacity);
+        return new Motorcycle(brand, model, mileage, condition, cilinderCapacity);
     }
-
-
-
 }

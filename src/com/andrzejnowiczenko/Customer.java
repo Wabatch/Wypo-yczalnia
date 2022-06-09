@@ -1,5 +1,6 @@
 package com.andrzejnowiczenko;
 
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Customer {
@@ -13,7 +14,6 @@ public class Customer {
         this.name = name;
         this.id = count.incrementAndGet();
     }
-
 
     public int getId() {
         return id;
