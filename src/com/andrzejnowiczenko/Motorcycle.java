@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Motorcycle extends Vehicle{
 
-    private int cilinderCapacity;
+    private final int cilinderCapacity;
 
     Motorcycle(String brand, String model, int mileage, String condition, int cilinderCapacity) {
         super(brand, model, mileage, condition);

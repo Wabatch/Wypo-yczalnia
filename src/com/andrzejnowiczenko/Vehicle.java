@@ -1,8 +1,9 @@
 package com.andrzejnowiczenko;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class Vehicle {
+public abstract class Vehicle implements Serializable {
 
     protected static final AtomicInteger count = new AtomicInteger(0);
     protected int id;
@@ -29,33 +30,21 @@ public abstract class Vehicle {
         return brand;
     }
 
-    public String getModel() {
-        return model;
+    public String isAvalibleResolver(){
+        if(this.isAvailable){
+            return "tak";
+        }
+        return "nie";
     }
 
-    public int getMileage() {
-        return mileage;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    //abstract public Vehicle newVehicle();
 
     @Override
     public String toString() {
-        return "Vehicle{" +
-                "id=" + id +
-                ", brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", mileage=" + mileage +
-                ", condition='" + condition + '\'' +
-                ", isAvailable=" + isAvailable +
-                '}';
+
+        return  "(" + id +
+                ")" + brand + " " + model +
+                " przebieg: " + mileage +
+                " stan: " + condition +
+                " dostępny: " + isAvalibleResolver();
     }
 }

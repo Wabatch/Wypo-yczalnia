@@ -1,12 +1,13 @@
 package com.andrzejnowiczenko;
 
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
 
     //licznik ktory zwieksza sie z kazdym nowym obiektem
-    private static final AtomicInteger count = new AtomicInteger(0);
+    transient private static final AtomicInteger count = new AtomicInteger(0);
     private final int id;
     private final String name;
 
@@ -25,10 +26,8 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return  "(" + id +
+                ")" + name;
     }
 
 }

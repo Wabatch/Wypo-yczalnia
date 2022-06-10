@@ -1,10 +1,6 @@
 package com.andrzejnowiczenko;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.Locale;
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
@@ -12,17 +8,7 @@ public class Main {
     CarRental carRental = new CarRental();
     Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws ParseException {
-
-       /*
-                    JAK ZROBIC DATE NO
-
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-        Scanner scanner = new Scanner(System.in);
-        String xxx = scanner.nextLine();
-        Date data = formatter.parse(xxx);
-        System.out.println(data);
-        */
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         CarRental carRental = new CarRental();
         Main main = new Main();
@@ -44,6 +30,10 @@ public class Main {
                 case 3 ->
                         main.rentalMenu();
                 case 4 ->
+                        main.save();
+                case 5 ->
+                        main.load();
+                case 6 ->
                         option = 0;
                 default ->
                         System.out.println("Brak opcji.");
@@ -51,14 +41,16 @@ public class Main {
         }while (option != 0);
     }
 
-                    //całe menu pod spodem, trzeba to przerzucic do klasy menu zeby byl porzadeczek okuratnie wzgledny jakis
+
 
     private void displayMenu(){
         System.out.println("Menu:");
         System.out.println("1. Klienci");
         System.out.println("2. Pojazdy");
         System.out.println("3. Wypożyczenia");
-        System.out.println("4. Wyjście");
+        System.out.println("4. Zapis do pliku");
+        System.out.println("5. Odczyt z pliku");
+        System.out.println("6. Wyjście");
     }
     private void customerMenu(){
         System.out.println("Klienci:");
@@ -130,17 +122,32 @@ public class Main {
 
         int option = scanner.nextInt();
 
-      /*  switch (option) {
+        switch (option) {
             case 1 ->
-
+                    carRental.addRent();
             case 2 ->
-
+                    carRental.displayRents();
             case 3 ->
-
+                    carRental.displayAvailableCars();
             case 4 ->
-
+                    carRental.displayRentedCars();
             case 5 ->
+                    carRental.displayOverdueReturnDate();
+
         }
-       */
     }
+
+    private void save() throws IOException {
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("zapis.dat"));
+        out.writeObject(carRental);
+        out.close();
+    }
+
+    private void load() throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream("zapis.dat"));
+        carRental = (CarRental) in.readObject();
+        in.close();
+    }
+
+
 }

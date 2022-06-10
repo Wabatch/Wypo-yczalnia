@@ -1,19 +1,19 @@
 package com.andrzejnowiczenko;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
-public class CarRental {
+public class CarRental implements Serializable {
 
-    Scanner scanner = new Scanner(System.in);
+    transient Scanner scanner = new Scanner(System.in);
 
     List<Customer> customers = new ArrayList<>();
     List<Vehicle> vehicles = new ArrayList<>();
     List<Rent> rents = new ArrayList<>();
 
-                        // dodaj,usun,wyswietl klientow
 
     public void addCustomer(){
         System.out.println("podaj imie i nazwisko");
@@ -40,12 +40,12 @@ public class CarRental {
 
         for (Customer customer: customers){
             if (customer.getName().toLowerCase().contains(name.toLowerCase())) {
-                System.out.println(customer.toString());
+                System.out.println(customer);
                 found = true;
             }
         }
 
-        if (found == false)
+        if (!found)
             System.out.println("Nie znaleziono danego klienta.");
     }
 
@@ -78,12 +78,12 @@ public class CarRental {
 
         for (Vehicle vehicle: vehicles){
             if (vehicle.getBrand().toLowerCase().contains(brand.toLowerCase())) {
-                System.out.println(vehicle.toString());
+                System.out.println(vehicle);
                 found = true;
             }
         }
 
-        if (found == false)
+        if (!found)
             System.out.println("Nie znaleziono danego modelu.");
     }
 
@@ -94,34 +94,113 @@ public class CarRental {
         vehicles.set(nr-1, null);
     }
 
+
     public void addRent() {
-
-        int ID = scanner.nextInt();
+        int numberOfDays;
+        int customerID;
+        int vehicleID;
         boolean found = false;
-        Customer rentingCustomer;
-        Vehicle rentingVehicle;
+        Customer rentingCustomer = null;
+        Vehicle rentingVehicle = null;
 
-        System.out.println("Podaj ID klienta:");
-        for (Customer customer: customers){
-            if (customer.getId()==ID) {
-                System.out.println("Znaleziono dane klienta: "+customer.toString()+". Klient zostanie przypisany do nowego wypozyczenia.");
-                rentingCustomer = customer;
-                found = true;
+        while(!found) {
+            System.out.println("Podaj ID klienta: (Aby anulowac wybierz '0')");
+            customerID = scanner.nextInt();
+            if(customerID == 0)
+                return;
+            for (Customer customer : customers) {
+                if (customer.getId() == customerID) {
+                    System.out.println("Znaleziono dane klienta: " + customer + ". Klient zostanie przypisany do nowego wypozyczenia.");
+                    rentingCustomer = customer;
+                    found = true;
+                }
+            }
+
+            if (!found)
+                System.out.println("Nie znaleziono danego klienta.");
+        }
+
+        found = false;
+        while(!found) {
+            System.out.println("Podaj ID pojazdu: (Aby anulowac wybierz '0')");
+            vehicleID = scanner.nextInt();
+            if(vehicleID == 0)
+                return;
+            for (Vehicle vehicle : vehicles) {
+                if (vehicle.getId() == vehicleID) {
+                    if(!vehicle.isAvailable){
+                        System.out.println("Pojazd nie jest dostępny");
+                        break;
+                    }
+                    System.out.println("Znaleziono pojazd: " + vehicle + ". Pojazd zostanie przypisany do nowego wypozyczenia.");
+                    rentingVehicle = vehicle;
+                    rentingVehicle.isAvailable = false;
+                    found = true;
+                }
+            }
+
+            if (!found)
+                System.out.println("Nie znaleziono danego pojazdu.");
+        }
+
+        System.out.println("Podaj okres wypożyczenia w dniach:");
+        numberOfDays = scanner.nextInt();
+
+        this.rents.add(new Rent(rentingCustomer, rentingVehicle, LocalDate.now(), LocalDate.now().plusDays(numberOfDays)));
+
+
+    }
+
+    public void displayRents() {
+        if (rents.isEmpty()) {
+            System.out.println("Brak wypozyczen, lista pusta.");
+        }
+        else {
+            for (Rent rent : rents) {
+                System.out.println(rent.toString());
+            }
+        }
+    }
+    public void displayAvailableCars(){
+        if (vehicles.isEmpty()) {
+            System.out.println("Brak aut, lista pusta.");
+        }
+        else {
+            for (Vehicle vehicle : vehicles) {
+                if(vehicle.isAvailable)
+                System.out.println(vehicle);
+            }
+        }
+    }
+
+    public void displayRentedCars(){
+        if (vehicles.isEmpty()) {
+            System.out.println("Brak aut, lista pusta.");
+        }
+        else {
+            for (Vehicle vehicle : vehicles) {
+                if(!vehicle.isAvailable)
+                    System.out.println(vehicle);
+            }
+        }
+    }
+    public void displayOverdueReturnDate(){
+        boolean found = false;
+        if (rents.isEmpty()) {
+            System.out.println("Brak wypozyczen, lista pusta.");
+        }
+        else {
+            for (Rent rent : rents) {
+                if (LocalDate.now().isAfter(rent.dateOfReturn)){
+                    System.out.println(rent);
+                    found = true;
+                }
             }
         }
 
-        if (found == false)
-            System.out.println("Nie znaleziono danego klienta.");
+        if(!found) System.out.println("Brak zaległych wypożyczen.");
 
-        found = false;
-        System.out.println("Podaj ID pojazdu:");
-        for (Vehicle vehicle: vehicles) {
-            System.out.println("Znaleziono pojazd: "+vehicle.toString()+". Pojazd zostanie przypisany do nowego wypozyczenia.");
-            rentingVehicle = vehicle;
-            found = true;
-        }
 
-        System.out.println("Ustalanie daty zwrotu wypozyczenia (format: yyyy-MM-dd):");
     }
 
 }

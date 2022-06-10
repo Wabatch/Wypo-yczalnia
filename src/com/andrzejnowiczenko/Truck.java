@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Truck extends Vehicle{
 
-    private int capacity;
+    private final int capacity;
 
     Truck(String brand, String model, int mileage, String condition, int capacity) {
         super(brand, model, mileage, condition);
@@ -22,7 +22,7 @@ public class Truck extends Vehicle{
         int mileage = scanner.nextInt();
         System.out.println("podaj stan");
         String condition = scanner.next();
-        System.out.println("podaj ladownosc:");
+        System.out.println("podaj ladownosc (w tonach):");
         int capacity = scanner.nextInt();
 
         return new Truck(brand, model, mileage, condition,capacity);
